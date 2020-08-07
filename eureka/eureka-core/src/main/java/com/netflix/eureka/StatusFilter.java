@@ -55,15 +55,14 @@ public class StatusFilter implements Filter {
      * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
      * javax.servlet.ServletResponse, javax.servlet.FilterChain)
      */
-    public void doFilter(ServletRequest request, ServletResponse response,
-                         FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         InstanceInfo myInfo = ApplicationInfoManager.getInstance().getInfo();
         InstanceStatus status = myInfo.getStatus();
+
+        // 当 Eureka Server 未处于开启状态（status != InstanceStatus.UP），返回 HTTP 状态码为 307 重定向
         if (status != InstanceStatus.UP && response instanceof HttpServletResponse) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
-            httpResponse.sendError(SC_TEMPORARY_REDIRECT,
-                    "Current node is currently not ready to serve requests -- current status: "
-                            + status + " - try another DS node: ");
+            httpResponse.sendError(SC_TEMPORARY_REDIRECT, "Current node is currently not ready to serve requests -- current status: " + status + " - try another DS node: ");
         }
         chain.doFilter(request, response);
     }

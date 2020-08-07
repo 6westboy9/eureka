@@ -64,9 +64,12 @@ public interface EurekaClientConfig {
     int getRegistryFetchIntervalSeconds();
 
     /**
+     * 向 Eureka Server 同步应用实例信息变化频率，单位为秒。
+     *
+     * <p>
      * Indicates how often(in seconds) to replicate instance changes to be
      * replicated to the eureka server.
-     *
+     * </p>
      * @return the instance replication interval in seconds.
      */
     int getInstanceInfoReplicationIntervalSeconds();
@@ -153,9 +156,15 @@ public interface EurekaClientConfig {
     int getEurekaServerConnectTimeoutSeconds();
 
     /**
+     * 获取备份注册中心实现类。当 Eureka Client 启动时，无法从 Eureka Server 读取注册信息（可能挂了），从备份注册中心读取注册信息。
+     * <p>
+     * 目前 Eureka Client 未提供合适的实现。
+     * </p>
+     * <p>
      * Gets the name of the implementation which implements
      * {@link BackupRegistry} to fetch the registry information as a fall back
      * option for only the first time when the eureka client starts.
+     * </p>
      *
      * <p>
      * This may be needed for applications which needs additional resiliency for
@@ -271,8 +280,12 @@ public interface EurekaClientConfig {
     boolean shouldUseDnsForFetchingServiceUrls();
 
     /**
+     * 是否向 Eureka Server 注册自身服务。
+     *
+     * <p>
      * Indicates whether or not this instance should register its information
      * with eureka server for discovery by others.
+     * </p>
      *
      * <p>
      * In some cases, you do not want your instances to be discovered whereas
@@ -285,8 +298,12 @@ public interface EurekaClientConfig {
     boolean shouldRegisterWithEureka();
 
     /**
+     * 当进程关闭时，是否向 Eureka Server 取消注册自身服务。
+     *
+     * <p>
      * Indicates whether the client should explicitly unregister itself from the remote server
      * on client shutdown.
+     * </p>
      *
      * @return true if this instance should unregister with eureka on client shutdown, false otherwise
      */
@@ -478,16 +495,24 @@ public interface EurekaClientConfig {
     String getRegistryRefreshSingleVipAddress();
 
     /**
+     * 心跳执行线程池大小。
+     *
+     * <p>
      * The thread pool size for the heartbeatExecutor to initialise with
+     * </p>
      *
      * @return the heartbeatExecutor thread pool size
      */
     int getHeartbeatExecutorThreadPoolSize();
 
     /**
+     * 心跳执行超时后的延迟重试的时间。
+     *
+     * <p>
      * Heartbeat executor exponential back off related property.
      * It is a maximum multiplier value for retry delay, in case where a sequence of timeouts
      * occurred.
+     * </p>
      *
      * @return maximum multiplier value for retry delay
      */

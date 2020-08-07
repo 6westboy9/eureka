@@ -101,6 +101,10 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
                             config.getHealthCheckUrl(), config.getSecureHealthCheckUrl());
 
 
+            // 应用初始化后是否开启
+            // 应用不开启，应用实例处于 STARTING 状态
+            // 应用开启，应用实例处于 UP 状态
+            // 使用应用初始化后不开启，可以通过调用 ApplicationInfoManager#setInstanceStatus(...) 方法改变应用实例状态
             // Start off with the STARTING state to avoid traffic
             if (!config.isInstanceEnabledOnit()) {
                 InstanceStatus initialStatus = InstanceStatus.STARTING;
@@ -112,6 +116,7 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
                          InstanceStatus.UP);
             }
 
+            // 设置应用实例信息构建器的元数据集合 InstanceInfo.Map<String, String> metadata
             // Add any user-specific metadata information
             for (Map.Entry<String, String> mapEntry : config.getMetadataMap().entrySet()) {
                 String key = mapEntry.getKey();
@@ -122,7 +127,9 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
                 }
             }
 
+            // 创建应用实例信息
             instanceInfo = builder.build();
+            // 设置应用实例信息的租约信息
             instanceInfo.setLeaseInfo(leaseInfoBuilder.build());
         }
         return instanceInfo;

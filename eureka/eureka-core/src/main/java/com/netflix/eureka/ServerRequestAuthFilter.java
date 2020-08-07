@@ -39,15 +39,13 @@ public class ServerRequestAuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         if (serverConfig == null) {
-            EurekaServerContext serverContext = (EurekaServerContext) filterConfig.getServletContext()
-                    .getAttribute(EurekaServerContext.class.getName());
+            EurekaServerContext serverContext = (EurekaServerContext) filterConfig.getServletContext().getAttribute(EurekaServerContext.class.getName());
             serverConfig = serverContext.getServerConfig();
         }
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         logAuth(request);
         chain.doFilter(request, response);
     }
@@ -57,6 +55,7 @@ public class ServerRequestAuthFilter implements Filter {
         // nothing to do here
     }
 
+    // Eureka Server 请求认证过滤器，Eureka Server 未实现认证
     protected void logAuth(ServletRequest request) {
         if (serverConfig.shouldLogIdentityHeaders()) {
             if (request instanceof HttpServletRequest) {

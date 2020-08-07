@@ -18,6 +18,8 @@ package com.netflix.eureka.lease;
 
 import com.netflix.eureka.registry.AbstractInstanceRegistry;
 
+// 租约管理器接口
+
 /**
  * This class is responsible for creating/renewing and evicting a <em>lease</em>
  * for a particular instance.

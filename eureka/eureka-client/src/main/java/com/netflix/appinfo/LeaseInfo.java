@@ -41,7 +41,10 @@ public class LeaseInfo {
     public static final int DEFAULT_LEASE_DURATION = 90;
 
     // Client settings
+
+    // 租约续约时间
     private int renewalIntervalInSecs = DEFAULT_LEASE_RENEWAL_INTERVAL;
+    // 租约过期时间
     private int durationInSecs = DEFAULT_LEASE_DURATION;
 
     // Server populated

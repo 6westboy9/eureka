@@ -90,6 +90,9 @@ public class EurekaClientServerRestIntegrationTest {
                 serverCodecs,
                 eurekaServiceUrl
         );
+
+        // 添加如下代码
+        Thread.sleep(Long.MAX_VALUE);
     }
 
     @AfterClass
@@ -231,16 +234,30 @@ public class EurekaClientServerRestIntegrationTest {
 
     }
 
-    private static void startServer() throws Exception {
-        File warFile = findWar();
+    // private static void startServer() throws Exception {
+    //     File warFile = findWar();
+    //
+    //     server = new Server(8080);
+    //
+    //     WebAppContext webapp = new WebAppContext();
+    //     webapp.setContextPath("/");
+    //     webapp.setWar(warFile.getAbsolutePath());
+    //     server.setHandler(webapp);
+    //
+    //     server.start();
+    //
+    //     eurekaServiceUrl = "http://localhost:8080/v2";
+    // }
 
+    private static void startServer() throws Exception {
         server = new Server(8080);
 
-        WebAppContext webapp = new WebAppContext();
-        webapp.setContextPath("/");
-        webapp.setWar(warFile.getAbsolutePath());
-        server.setHandler(webapp);
-
+        // Thread.currentThread().getContextClassLoader() 获取不到路径，先暂时这样
+        WebAppContext webAppCtx = new WebAppContext(new File("./eureka-server/src/main/webapp").getAbsolutePath(), "/");
+        webAppCtx.setDescriptor(new File("./eureka-server/src/main/webapp/WEB-INF/web.xml").getAbsolutePath());
+        webAppCtx.setResourceBase(new File("./eureka-server/src/main/resources").getAbsolutePath());
+        webAppCtx.setClassLoader(Thread.currentThread().getContextClassLoader());
+        server.setHandler(webAppCtx);
         server.start();
 
         eurekaServiceUrl = "http://localhost:8080/v2";

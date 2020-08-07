@@ -19,6 +19,8 @@ import java.util.List;
 
 import com.netflix.appinfo.InstanceInfo;
 
+// 查找服务接口，提供简单单一的方式获取应用集合（Application）和应用实例集合（InstanceInfo）
+
 /**
  * Lookup service for finding active instances.
  *
