@@ -55,11 +55,12 @@ classes
 
 # IntelliJ specific files/directories
 out
-.idea
+
 *.ipr
 *.iws
 *.iml
 atlassian-ide-plugin.xml
+.idea/
 
 # Eclipse specific files/directories
 .classpath
