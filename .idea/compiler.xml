@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="eureka.eureka" target="1.8" />
+      <module name="eureka.eureka-client" target="1.8" />
+      <module name="eureka.eureka-client-archaius2" target="1.8" />
+      <module name="eureka.eureka-client-archaius2.main" target="1.8" />
+      <module name="eureka.eureka-client-archaius2.test" target="1.8" />
+      <module name="eureka.eureka-client-jersey2" target="1.8" />
+      <module name="eureka.eureka-client-jersey2.main" target="1.8" />
+      <module name="eureka.eureka-client-jersey2.test" target="1.8" />
+      <module name="eureka.eureka-client.main" target="1.8" />
+      <module name="eureka.eureka-client.test" target="1.8" />
+      <module name="eureka.eureka-core" target="1.8" />
+      <module name="eureka.eureka-core-jersey2" target="1.8" />
+      <module name="eureka.eureka-core-jersey2.main" target="1.8" />
+      <module name="eureka.eureka-core-jersey2.test" target="1.8" />
+      <module name="eureka.eureka-core.main" target="1.8" />
+      <module name="eureka.eureka-core.test" target="1.8" />
+      <module name="eureka.eureka-examples" target="1.8" />
+      <module name="eureka.eureka-examples.main" target="1.8" />
+      <module name="eureka.eureka-examples.test" target="1.8" />
+      <module name="eureka.eureka-resources" target="1.8" />
+      <module name="eureka.eureka-resources.main" target="1.8" />
+      <module name="eureka.eureka-resources.test" target="1.8" />
+      <module name="eureka.eureka-server" target="1.8" />
+      <module name="eureka.eureka-server-governator" target="1.8" />
+      <module name="eureka.eureka-server-governator.main" target="1.8" />
+      <module name="eureka.eureka-server-governator.test" target="1.8" />
+      <module name="eureka.eureka-server.main" target="1.8" />
+      <module name="eureka.eureka-server.test" target="1.8" />
+      <module name="eureka.eureka-test-utils" target="1.8" />
+      <module name="eureka.eureka-test-utils.main" target="1.8" />
+      <module name="eureka.eureka-test-utils.test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

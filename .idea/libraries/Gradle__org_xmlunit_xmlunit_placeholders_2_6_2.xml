@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.xmlunit:xmlunit-placeholders:2.6.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.xmlunit/xmlunit-placeholders/2.6.2/dbbf9085e5ad7971784abf6d03171b48f3d0f8c9/xmlunit-placeholders-2.6.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.xmlunit/xmlunit-placeholders/2.6.2/ae33c7b32be11fd56bed41c1acbd677450ded2a2/xmlunit-placeholders-2.6.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

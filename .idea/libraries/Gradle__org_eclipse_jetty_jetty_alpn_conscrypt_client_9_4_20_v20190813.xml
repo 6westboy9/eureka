@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.eclipse.jetty:jetty-alpn-conscrypt-client:9.4.20.v20190813">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-alpn-conscrypt-client/9.4.20.v20190813/95d2a4ebad35015cb1fbc69595ae5107134b7d5f/jetty-alpn-conscrypt-client-9.4.20.v20190813.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-alpn-conscrypt-client/9.4.20.v20190813/d7be80ef87b4bcfcee08001d48fe8fbbea74e276/jetty-alpn-conscrypt-client-9.4.20.v20190813-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

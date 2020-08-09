@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/eureka.iml" filepath="$PROJECT_DIR$/.idea/eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka.eureka.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka.eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client/eureka.eureka-client.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client/eureka.eureka-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client-archaius2/eureka.eureka-client-archaius2.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client-archaius2/eureka.eureka-client-archaius2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client-archaius2/eureka.eureka-client-archaius2.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client-archaius2/eureka.eureka-client-archaius2.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client-archaius2/eureka.eureka-client-archaius2.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client-archaius2/eureka.eureka-client-archaius2.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client-jersey2/eureka.eureka-client-jersey2.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client-jersey2/eureka.eureka-client-jersey2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client-jersey2/eureka.eureka-client-jersey2.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client-jersey2/eureka.eureka-client-jersey2.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client-jersey2/eureka.eureka-client-jersey2.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client-jersey2/eureka.eureka-client-jersey2.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client/eureka.eureka-client.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client/eureka.eureka-client.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-client/eureka.eureka-client.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-client/eureka.eureka-client.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-core/eureka.eureka-core.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-core/eureka.eureka-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-core-jersey2/eureka.eureka-core-jersey2.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-core-jersey2/eureka.eureka-core-jersey2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-core-jersey2/eureka.eureka-core-jersey2.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-core-jersey2/eureka.eureka-core-jersey2.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-core-jersey2/eureka.eureka-core-jersey2.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-core-jersey2/eureka.eureka-core-jersey2.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-core/eureka.eureka-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-core/eureka.eureka-core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-core/eureka.eureka-core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-core/eureka.eureka-core.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-examples/eureka.eureka-examples.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-examples/eureka.eureka-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-examples/eureka.eureka-examples.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-examples/eureka.eureka-examples.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-examples/eureka.eureka-examples.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-examples/eureka.eureka-examples.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-resources/eureka.eureka-resources.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-resources/eureka.eureka-resources.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-resources/eureka.eureka-resources.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-resources/eureka.eureka-resources.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-resources/eureka.eureka-resources.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-resources/eureka.eureka-resources.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server/eureka.eureka-server.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server/eureka.eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server-governator/eureka.eureka-server-governator.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server-governator/eureka.eureka-server-governator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server-governator/eureka.eureka-server-governator.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server-governator/eureka.eureka-server-governator.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server-governator/eureka.eureka-server-governator.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server-governator/eureka.eureka-server-governator.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server/eureka.eureka-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server/eureka.eureka-server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-server/eureka.eureka-server.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-server/eureka.eureka-server.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-test-utils/eureka.eureka-test-utils.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-test-utils/eureka.eureka-test-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-test-utils/eureka.eureka-test-utils.main.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-test-utils/eureka.eureka-test-utils.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eureka-test-utils/eureka.eureka-test-utils.test.iml" filepath="$PROJECT_DIR$/.idea/modules/eureka-test-utils/eureka.eureka-test-utils.test.iml" />
+    </modules>
+  </component>
+</project>

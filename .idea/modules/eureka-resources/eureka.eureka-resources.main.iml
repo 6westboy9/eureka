@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="ExternalSystem" externalSystem="GRADLE" externalSystemModuleGroup="com.netflix.eureka" externalSystemModuleType="sourceSet" externalSystemModuleVersion="0.1.0-dev.0.uncommitted" linkedProjectId=":eureka-resources:main" linkedProjectPath="$MODULE_DIR$/../../../eureka/eureka-resources" rootProjectPath="$MODULE_DIR$/../../../eureka" />
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/../../../eureka/eureka-resources/build/classes/java/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../eureka/eureka-resources/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../../eureka/eureka-resources/src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

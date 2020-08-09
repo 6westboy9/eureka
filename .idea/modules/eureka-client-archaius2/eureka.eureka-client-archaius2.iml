@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="ExternalSystem" externalSystem="GRADLE" externalSystemModuleGroup="com.netflix.eureka" externalSystemModuleVersion="0.1.0-dev.0.uncommitted" linkedProjectId=":eureka-client-archaius2" linkedProjectPath="$MODULE_DIR$/../../../eureka/eureka-client-archaius2" rootProjectPath="$MODULE_DIR$/../../../eureka" />
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../eureka/eureka-client-archaius2">
+      <excludeFolder url="file://$MODULE_DIR$/../../../eureka/eureka-client-archaius2/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../eureka/eureka-client-archaius2/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

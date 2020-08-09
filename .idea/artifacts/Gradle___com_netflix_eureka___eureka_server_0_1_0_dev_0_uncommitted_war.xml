@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Gradle : com.netflix.eureka : eureka-server-0.1.0-dev.0.uncommitted.war">
+    <output-path>$PROJECT_DIR$/eureka/eureka-server/build/libs</output-path>
+    <root id="archive" name="eureka-server-0.1.0-dev.0.uncommitted.war">
+      <element id="artifact" artifact-name="Gradle : com.netflix.eureka : eureka-server-0.1.0-dev.0.uncommitted.war (exploded)" />
+    </root>
+  </artifact>
+</component>
