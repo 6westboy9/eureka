@@ -198,6 +198,9 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             // 增加注册次数到监控
             REGISTER.increment(isReplication);
             // 获取应用实例信息对应的租约
+            // 如果说是某个服务第一次来注册，很明显，通过 AppName 是获取不到 Map 的，为空
+            // 此时就会创建一个新的 map，给放到大的 registry map 中取
+            // 其实这个 registry map，就是一个注册表，里面包含了每个服务对应的服务实例的注册信息
             if (gMap == null) {
                 final ConcurrentHashMap<String, Lease<InstanceInfo>> gNewMap = new ConcurrentHashMap<String, Lease<InstanceInfo>>();
                 gMap = registry.putIfAbsent(registrant.getAppName(), gNewMap);
@@ -205,6 +208,10 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                     gMap = gNewMap;
                 }
             }
+
+            // 通过 instanceId，从 gMap 中获取服务实例对应的租约
+            // 我们假设，是这个服务的这个服务实例，第一次来注册，那么这里获取到的 lease 一定是 null
+            // 因为这个服务实例之前没有来注册过
             Lease<InstanceInfo> existingLease = gMap.get(registrant.getId());
             // Retain the last dirty timestamp without overwriting it, if there is already a lease
             if (existingLease != null && (existingLease.getHolder() != null)) {
@@ -233,6 +240,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             }
 
             // 创建租约
+            // 在这里，会将这个 InstanceInfo 封装为一个 Lease 对象
             Lease<InstanceInfo> lease = new Lease<InstanceInfo>(registrant, leaseDuration);
 
             // 若租约已存在，设置租约的开始服务的时间戳
@@ -241,6 +249,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             }
 
             // 添加到租约映射
+            // 直接将封装了服务实例信息的 Lease 对象，放到 gMap 里面去，key 就是服务实例 id
             gMap.put(registrant.getId(), lease);
 
             // 添加到最近注册的调试队列

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -38,7 +41,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c10b083-2f1c-4ab5-a90e-fb6cf2ace831" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/eureka/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/eureka/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eureka/eureka-core/src/main/java/com/netflix/eureka/registry/AbstractInstanceRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/eureka/eureka-core/src/main/java/com/netflix/eureka/registry/AbstractInstanceRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eureka/eureka-core/src/main/java/com/netflix/eureka/resources/ApplicationResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/eureka/eureka-core/src/main/java/com/netflix/eureka/resources/ApplicationResource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +59,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$/eureka">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -68,6 +77,11 @@
     </system>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1fiohdzQIQiDXfilMKbkGsluGB7" />
@@ -79,10 +93,14 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.gutterIcons" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
   </component>
   <component name="RunManager">
     <configuration name="ApplicationsResourceTest.testFullAppsGetGzipJsonHeaderType" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -146,12 +164,17 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="【新增】客户端与服务端启动与注册" />
     <option name="LAST_COMMIT_MESSAGE" value="【新增】客户端与服务端启动与注册" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="939" y="123" key="#Project_Structure" timestamp="1596951801299">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="939" y="123" key="#Project_Structure/0.0.2560.1400@0.0.2560.1400" timestamp="1596951801299" />
     <state width="2504" height="253" key="GridCell.Tab.0.bottom" timestamp="1596797327123">
       <screen x="1680" y="23" width="2560" height="1373" />
     </state>
@@ -168,9 +191,10 @@
       <screen x="1680" y="23" width="2560" height="1373" />
     </state>
     <state width="2504" height="253" key="GridCell.Tab.0.right/1680.23.2560.1373/0.23.1680.1027@1680.23.2560.1373" timestamp="1596797327122" />
-    <state x="2352" y="261" key="SettingsEditor" timestamp="1596780255570">
-      <screen x="1680" y="23" width="2560" height="1373" />
+    <state x="902" y="256" key="SettingsEditor" timestamp="1596952647841">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state x="902" y="256" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1596952647841" />
     <state x="2352" y="261" key="SettingsEditor/1680.23.2560.1373/0.23.1680.1027@1680.23.2560.1373" timestamp="1596780255570" />
     <state width="625" height="500" key="SwitcherDM" timestamp="1596795785055">
       <screen x="1680" y="23" width="2560" height="1373" />
