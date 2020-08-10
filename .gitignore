@@ -38,7 +38,7 @@ Thumbs.db
 
 # Gradle Files #
 ################
-.gradle
+eureka/.gradle
 .m2
 
 # Build output directies
@@ -71,3 +71,5 @@ atlassian-ide-plugin.xml
 .nbattrs
 
 .idea/
+
+/eureka/*/build/
