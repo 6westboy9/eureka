@@ -83,6 +83,7 @@ public abstract class AbstractJersey2EurekaHttpClient implements EurekaHttpClien
 
     @Override
     public EurekaHttpResponse<Void> register(InstanceInfo info) {
+        // 发送注册请求 http://localhost:8080/v2/apps/ServiceA，将 InstanceInfo 信息发送至 Eureka Server
         String urlPath = "apps/" + info.getAppName();
         Response response = null;
         try {
@@ -96,8 +97,7 @@ public abstract class AbstractJersey2EurekaHttpClient implements EurekaHttpClien
             return anEurekaHttpResponse(response.getStatus()).headers(headersOf(response)).build();
         } finally {
             if (logger.isDebugEnabled()) {
-                logger.debug("Jersey2 HTTP POST {}/{} with instance {}; statusCode={}", serviceUrl, urlPath, info.getId(),
-                        response == null ? "N/A" : response.getStatus());
+                logger.debug("Jersey2 HTTP POST {}/{} with instance {}; statusCode={}", serviceUrl, urlPath, info.getId(), response == null ? "N/A" : response.getStatus());
             }
             if (response != null) {
                 response.close();

@@ -42,12 +42,12 @@ public class Lease<T> {
     private T holder;
     // 注册时间戳
     private long evictionTimestamp;
-    // 开始服务时间戳
+    // 服务注册成功时的时间戳
     private long registrationTimestamp;
-    // 取消注册时间戳
+    // 服务实例状态更新为 UP 时的时间戳
     private long serviceUpTimestamp;
     // Make it volatile so that the expiration task would see this quicker
-    // 最后更新时间戳
+    // 最近一次更新时间戳
     private volatile long lastUpdateTimestamp;
     // 租约持续时长，单位：毫秒
     private long duration;

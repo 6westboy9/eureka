@@ -103,10 +103,12 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
         String env = ConfigurationManager.getConfigInstance().getString(EUREKA_ENVIRONMENT, TEST);
         ConfigurationManager.getConfigInstance().setProperty(ARCHAIUS_DEPLOYMENT_ENVIRONMENT, env);
 
+        // 默认加载 eureka-server.properties 中的配置到 Properties 对象中
         String eurekaPropsFile = EUREKA_PROPS_FILE.get();
         try {
             // ConfigurationManager
             // .loadPropertiesFromResources(eurekaPropsFile);
+            // 加载配置资源放到 ConfigurationManager 配置管理器中，此时，ConfigurationManager 中就有了所有配置
             ConfigurationManager.loadCascadedPropertiesFromResources(eurekaPropsFile);
         } catch (IOException e) {
             logger.warn("Cannot find the properties specified : {}. This may be okay if there are other environment " + "specific properties or the configuration is installed with a different mechanism.", eurekaPropsFile);
@@ -290,9 +292,7 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
 
     @Override
     public long getRetentionTimeInMSInDeltaQueue() {
-        return configInstance.getLongProperty(
-                namespace + "retentionTimeInMSInDeltaQueue", (3 * 60 * 1000))
-                .get();
+        return configInstance.getLongProperty(namespace + "retentionTimeInMSInDeltaQueue", (3 * 60 * 1000)).get();
     }
 
     @Override

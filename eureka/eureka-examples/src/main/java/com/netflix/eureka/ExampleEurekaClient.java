@@ -77,8 +77,7 @@ public class ExampleEurekaClient {
             System.exit(-1);
         }
 
-        System.out.println("Found an instance of example service to talk to from eureka: "
-                + nextServerInfo.getVIPAddress() + ":" + nextServerInfo.getPort());
+        System.out.println("Found an instance of example service to talk to from eureka: " + nextServerInfo.getVIPAddress() + ":" + nextServerInfo.getPort());
 
         System.out.println("healthCheckUrl: " + nextServerInfo.getHealthCheckUrl());
         System.out.println("override: " + nextServerInfo.getOverriddenStatus());
@@ -88,11 +87,9 @@ public class ExampleEurekaClient {
         try {
             s.connect(new InetSocketAddress(nextServerInfo.getHostName(), serverPort));
         } catch (IOException e) {
-            System.err.println("Could not connect to the server :"
-                    + nextServerInfo.getHostName() + " at port " + serverPort);
+            System.err.println("Could not connect to the server :" + nextServerInfo.getHostName() + " at port " + serverPort);
         } catch (Exception e) {
-            System.err.println("Could not connect to the server :"
-                    + nextServerInfo.getHostName() + " at port " + serverPort + "due to Exception " + e);
+            System.err.println("Could not connect to the server :" + nextServerInfo.getHostName() + " at port " + serverPort + "due to Exception " + e);
         }
         try {
             String request = "FOO " + new Date();

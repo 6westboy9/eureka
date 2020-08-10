@@ -29,7 +29,9 @@ import org.slf4j.LoggerFactory;
  */
 public class MeasuredRate {
     private static final Logger logger = LoggerFactory.getLogger(MeasuredRate.class);
+    // 上次维护的数量
     private final AtomicLong lastBucket = new AtomicLong(0);
+    // 当前维护的数量
     private final AtomicLong currentBucket = new AtomicLong(0);
 
     private final long sampleInterval;
@@ -54,6 +56,8 @@ public class MeasuredRate {
                 public void run() {
                     try {
                         // Zero out the current bucket.
+                        // 将当前桶数量设置到上次桶的数量中去
+                        // 将当前桶数量清零
                         lastBucket.set(currentBucket.getAndSet(0));
                     } catch (Throwable e) {
                         logger.error("Cannot reset the Measured Rate", e);
