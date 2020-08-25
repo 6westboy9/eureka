@@ -60,11 +60,11 @@ public class ApplicationInfoManager {
 
     // 状态变更监听器
     protected final Map<String, StatusChangeListener> listeners;
-    // 应用实例状态匹配
+    // 服务实例状态匹配，默认为 NO_OP_MAPPER 即不进行任何操作，可以通过可选参数 OptionalArgs 进行覆盖
     private final InstanceStatusMapper instanceStatusMapper;
-    // 应用实例信息
+    // 服务实例信息
     private InstanceInfo instanceInfo;
-    // 应用实例配置
+    // 服务实例配置
     private EurekaInstanceConfig config;
 
     public static class OptionalArgs {
@@ -169,6 +169,7 @@ public class ApplicationInfoManager {
      * @param status Status of the instance
      */
     public synchronized void setInstanceStatus(InstanceStatus status) {
+        // 默认 instanceStatusMapper 为 NO_OP_MAPPER 即不进行任何操作，传进去是什么，输出就是什么
         InstanceStatus next = instanceStatusMapper.map(status);
         if (next == null) {
             return;
@@ -178,6 +179,7 @@ public class ApplicationInfoManager {
         if (prev != null) {
             for (StatusChangeListener listener : listeners.values()) {
                 try {
+                    // 触发监听器
                     listener.notify(new StatusChangeEvent(prev, next));
                 } catch (Exception e) {
                     logger.warn("failed to notify listener: {}", listener.getId(), e);
@@ -226,9 +228,7 @@ public class ApplicationInfoManager {
         if (config.getDataCenterInfo() instanceof AmazonInfo) {
             String newSpotInstanceAction = ((AmazonInfo) config.getDataCenterInfo()).get(AmazonInfo.MetaDataKey.spotInstanceAction);
             if (newSpotInstanceAction != null && !newSpotInstanceAction.equals(existingSpotInstanceAction)) {
-                logger.info(String.format("The spot instance termination action changed from: %s => %s",
-                        existingSpotInstanceAction,
-                        newSpotInstanceAction));
+                logger.info(String.format("The spot instance termination action changed from: %s => %s", existingSpotInstanceAction, newSpotInstanceAction));
                 updateInstanceInfo(null , null );
             }
         }        
@@ -254,14 +254,18 @@ public class ApplicationInfoManager {
         if (leaseInfo == null) {
             return;
         }
+
+        // 契约过期时间
         int currentLeaseDuration = config.getLeaseExpirationDurationInSeconds();
+        // 续约时间间隔
         int currentLeaseRenewal = config.getLeaseRenewalIntervalInSeconds();
-        //
+
         if (leaseInfo.getDurationInSecs() != currentLeaseDuration || leaseInfo.getRenewalIntervalInSecs() != currentLeaseRenewal) {
             LeaseInfo newLeaseInfo = LeaseInfo.Builder.newBuilder()
                     .setRenewalIntervalInSecs(currentLeaseRenewal)
                     .setDurationInSecs(currentLeaseDuration)
                     .build();
+
             instanceInfo.setLeaseInfo(newLeaseInfo);
             instanceInfo.setIsDirty();
         }

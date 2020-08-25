@@ -112,12 +112,17 @@ public class ResponseCacheImpl implements ResponseCache {
                 }
             });
 
+    // 只读缓存
     private final ConcurrentMap<Key, Value> readOnlyCacheMap = new ConcurrentHashMap<Key, Value>();
-
+    // 读写缓存
     private final LoadingCache<Key, Value> readWriteCacheMap;
+    // 是否使用只读缓存
     private final boolean shouldUseReadOnlyResponseCache;
+    // 注册表
     private final AbstractInstanceRegistry registry;
+    // Eureka Server 端的配置
     private final EurekaServerConfig serverConfig;
+    // 编解码
     private final ServerCodecs serverCodecs;
 
     ResponseCacheImpl(EurekaServerConfig serverConfig, ServerCodecs serverCodecs, AbstractInstanceRegistry registry) {
@@ -424,8 +429,7 @@ public class ResponseCacheImpl implements ResponseCache {
                             tracer = serializeDeltaAppsWithRemoteRegionTimer.start();
                             versionDeltaWithRegions.incrementAndGet();
                             versionDeltaWithRegionsLegacy.incrementAndGet();
-                            payload = getPayLoad(key,
-                                    registry.getApplicationDeltasFromMultipleRegions(key.getRegions()));
+                            payload = getPayLoad(key, registry.getApplicationDeltasFromMultipleRegions(key.getRegions()));
                         } else {
                             tracer = serializeDeltaAppsTimer.start();
                             versionDelta.incrementAndGet();

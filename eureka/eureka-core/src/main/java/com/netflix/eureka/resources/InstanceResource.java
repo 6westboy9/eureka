@@ -108,6 +108,8 @@ public class InstanceResource {
             @QueryParam("overriddenstatus") String overriddenStatus,
             @QueryParam("status") String status,
             @QueryParam("lastDirtyTimestamp") String lastDirtyTimestamp) {
+
+        // 是否
         boolean isFromReplicaNode = "true".equals(isReplication);
         boolean isSuccess = registry.renew(app.getName(), id, isFromReplicaNode);
 
@@ -166,9 +168,7 @@ public class InstanceResource {
                 logger.warn("Instance not found: {}/{}", app.getName(), id);
                 return Response.status(Status.NOT_FOUND).build();
             }
-            boolean isSuccess = registry.statusUpdate(app.getName(), id,
-                    InstanceStatus.valueOf(newStatus), lastDirtyTimestamp,
-                    "true".equals(isReplication));
+            boolean isSuccess = registry.statusUpdate(app.getName(), id, InstanceStatus.valueOf(newStatus), lastDirtyTimestamp, "true".equals(isReplication));
 
             if (isSuccess) {
                 logger.info("Status updated: {} - {} - {}", app.getName(), id, newStatus);
@@ -278,8 +278,7 @@ public class InstanceResource {
     public Response cancelLease(
             @HeaderParam(PeerEurekaNode.HEADER_REPLICATION) String isReplication) {
         try {
-            boolean isSuccess = registry.cancel(app.getName(), id,
-                "true".equals(isReplication));
+            boolean isSuccess = registry.cancel(app.getName(), id, "true".equals(isReplication));
 
             if (isSuccess) {
                 logger.debug("Found (Cancel): {} - {}", app.getName(), id);

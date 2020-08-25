@@ -64,7 +64,7 @@ public interface EurekaClientConfig {
     int getRegistryFetchIntervalSeconds();
 
     /**
-     * 向 Eureka Server 同步应用实例信息变化频率，单位为秒。
+     * 向 Eureka Server 同步服务实例信息变化频率，单位为秒，默认 30 秒
      *
      * <p>
      * Indicates how often(in seconds) to replicate instance changes to be

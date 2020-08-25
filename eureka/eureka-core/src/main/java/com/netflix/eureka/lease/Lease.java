@@ -40,7 +40,7 @@ public class Lease<T> {
 
     // 实体
     private T holder;
-    // 注册时间戳
+    // 服务剔除/下线时间戳
     private long evictionTimestamp;
     // 服务注册成功时的时间戳
     private long registrationTimestamp;

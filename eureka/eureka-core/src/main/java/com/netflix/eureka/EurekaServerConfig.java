@@ -380,6 +380,8 @@ public interface EurekaServerConfig {
      * Get the number of times that a eureka node would try to get the registry
      * information from the peers during startup.
      *
+     * 获取 Eureka 节点在启动期间试图从对等节点获取注册表信息的次数
+     *
      * @return the number of retries
      */
     int getRegistrySyncRetries();

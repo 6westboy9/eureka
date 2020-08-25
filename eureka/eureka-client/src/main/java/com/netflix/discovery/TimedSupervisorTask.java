@@ -29,6 +29,7 @@ public class TimedSupervisorTask extends TimerTask {
     private final Counter timeoutCounter;
     private final Counter rejectedCounter;
     private final Counter throwableCounter;
+    // 一个原子 Long 类型操作的工具
     private final LongGauge threadPoolLevelGauge;
 
     private final String name;
@@ -65,6 +66,7 @@ public class TimedSupervisorTask extends TimerTask {
         try {
             future = executor.submit(task);
             threadPoolLevelGauge.set((long) executor.getActiveCount());
+            // 获取执行结果
             future.get(timeoutMillis, TimeUnit.MILLISECONDS);  // block until done or timeout
             delay.set(timeoutMillis);
             threadPoolLevelGauge.set((long) executor.getActiveCount());

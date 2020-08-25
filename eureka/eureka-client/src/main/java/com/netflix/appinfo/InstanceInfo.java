@@ -136,15 +136,20 @@ public class InstanceInfo {
     private volatile boolean isUnsecurePortEnabled = true;
     private volatile DataCenterInfo dataCenterInfo;
     private volatile String hostName;
+    // 服务实例状态
     private volatile InstanceStatus status = InstanceStatus.UP;
+    // 服务实例覆盖状态
     private volatile InstanceStatus overriddenStatus = InstanceStatus.UNKNOWN;
     @XStreamOmitField
+    // 如果 isInstanceInfoDirty 为 true 表示，服务实例信息有更新，需要重新注册
     private volatile boolean isInstanceInfoDirty = false;
+    // 租约信息
     private volatile LeaseInfo leaseInfo;
     @Auto
     private volatile Boolean isCoordinatingDiscoveryServer = Boolean.FALSE;
     @XStreamAlias("metadata")
     private volatile Map<String, String> metadata;
+    // 最近更新时间
     @Auto
     private volatile Long lastUpdatedTimestamp;
     @Auto
@@ -1213,6 +1218,9 @@ public class InstanceInfo {
      * @return the lastDirtyTimestamp if is dirty, null otherwise.
      */
     public synchronized Long isDirtyWithTime() {
+        // instanceInfo.setIsDirty() 的具体操作
+        // isInstanceInfoDirty = true;
+        // lastDirtyTimestamp = System.currentTimeMillis();
         if (isInstanceInfoDirty) {
             return lastDirtyTimestamp;
         } else {
@@ -1260,6 +1268,8 @@ public class InstanceInfo {
     /**
      * Unset the dirty flag iff the unsetDirtyTimestamp matches the lastDirtyTimestamp. No-op if
      * lastDirtyTimestamp > unsetDirtyTimestamp
+     *
+     * 如果 unsetDirtyTimestamp 与 lastDirtyTimestamp 匹配，就取消 dirty 标志。如果 lastDirtyTimestamp > unsetDirtyTimestamp，则没有操作
      *
      * @param unsetDirtyTimestamp the expected lastDirtyTimestamp to unset.
      */

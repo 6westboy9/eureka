@@ -41,7 +41,9 @@ public class PeerEurekaNodes {
     protected final ServerCodecs serverCodecs;
     private final ApplicationInfoManager applicationInfoManager;
 
+    // 不包含自身的其他 Eureka Server 节点
     private volatile List<PeerEurekaNode> peerEurekaNodes = Collections.emptyList();
+    // 不包含自身的其他 Eureka Server 节点的注册地址
     private volatile Set<String> peerEurekaNodeUrls = Collections.emptySet();
 
     private ScheduledExecutorService taskExecutor;
@@ -84,7 +86,11 @@ public class PeerEurekaNodes {
                 }
         );
         try {
+            // 解析配置文件中的其他 Eureka Server 的 URL 地址，基于 URL 地址构造一个个 PeerEurekaNode，一个 PeerEurekaNode 就代表了一个 Eureka Server
+            // 刷新 Eureka Server 列表
             updatePeerEurekaNodes(resolvePeerUrls());
+
+            // 定时任务刷新 Eureka Server 列表
             Runnable peersUpdateTask = new Runnable() {
                 @Override
                 public void run() {
@@ -135,6 +141,7 @@ public class PeerEurekaNodes {
         int idx = 0;
         while (idx < replicaUrls.size()) {
             if (isThisMyUrl(replicaUrls.get(idx))) {
+                // 配置文件中排除自己之外其他 Eureka Server 地址
                 replicaUrls.remove(idx);
             } else {
                 idx++;
@@ -160,6 +167,7 @@ public class PeerEurekaNodes {
         Set<String> toAdd = new HashSet<>(newPeerUrls);
         toAdd.removeAll(peerEurekaNodeUrls);
 
+        // 没有变化，无需刷新
         if (toShutdown.isEmpty() && toAdd.isEmpty()) { // No change
             return;
         }

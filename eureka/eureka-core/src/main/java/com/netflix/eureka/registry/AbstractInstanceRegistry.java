@@ -79,8 +79,11 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
     private static final String[] EMPTY_STR_ARRAY = new String[0];
     private final ConcurrentHashMap<String, Map<String, Lease<InstanceInfo>>> registry = new ConcurrentHashMap<String, Map<String, Lease<InstanceInfo>>>();
     protected Map<String, RemoteRegionRegistry> regionNameVSRemoteRegistry = new HashMap<String, RemoteRegionRegistry>();
+
+    //
     protected final ConcurrentMap<String, InstanceStatus> overriddenInstanceStatusMap = CacheBuilder
             .newBuilder().initialCapacity(500)
+            // 过期时间 1 个小时
             .expireAfterAccess(1, TimeUnit.HOURS)
             .<String, InstanceStatus>build().asMap();
 
@@ -95,11 +98,15 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
     private ConcurrentLinkedQueue<RecentlyChangedItem> recentlyChangedQueue = new ConcurrentLinkedQueue<RecentlyChangedItem>();
 
     private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    // 读锁
     private final Lock read = readWriteLock.readLock();
+    // 写锁
     private final Lock write = readWriteLock.writeLock();
     protected final Object lock = new Object();
 
+    // 用于维护一个最近三分钟有变动的服务实例的定时器
     private Timer deltaRetentionTimer = new Timer("Eureka-DeltaRetentionTimer", true);
+    // 用于剔除服务的一个定时器
     private Timer evictionTimer = new Timer("Eureka-EvictionTimer", true);
 
     // 维护的最近一分钟的心跳次数
@@ -109,14 +116,18 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
     private final AtomicReference<EvictionTask> evictionTaskRef = new AtomicReference<EvictionTask>();
 
     protected String[] allKnownRemoteRegions = EMPTY_STR_ARRAY;
-    // 每分钟接收心跳次数的阈值
+    // 每分钟期望接收到心跳次数的阈值
     protected volatile int numberOfRenewsPerMinThreshold;
     // 期望发送心跳的客户端数量
     protected volatile int expectedNumberOfClientsSendingRenews;
 
+    // 服务端配置
     protected final EurekaServerConfig serverConfig;
+    // 服务端也是作为客户端存在的，客户端配置
     protected final EurekaClientConfig clientConfig;
+    // 编解码
     protected final ServerCodecs serverCodecs;
+    // 响应请求缓存
     protected volatile ResponseCache responseCache;
 
     /**
@@ -157,8 +168,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 allKnownRemoteRegions[remoteRegionArrayIndex++] = remoteRegionUrlWithName.getKey();
             }
         }
-        logger.info("Finished initializing remote region registries. All known remote regions: {}",
-                (Object) allKnownRemoteRegions);
+        logger.info("Finished initializing remote region registries. All known remote regions: {}", (Object) allKnownRemoteRegions);
     }
 
     @Override
@@ -247,7 +257,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 logger.debug("No previous lease information found; it is new registration");
             }
 
-            // 创建租约
+            // 创建租约（其实为更新租约时间相关）
             // 在这里，会将这个 InstanceInfo 封装为一个 Lease 对象
             Lease<InstanceInfo> lease = new Lease<InstanceInfo>(registrant, leaseDuration);
 
@@ -338,7 +348,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 leaseToCancel = gMap.remove(id);
             }
 
-            // 存储到下线对垒中去
+            // 存储到下线队列中去
             recentCanceledQueue.add(new Pair<Long, String>(System.currentTimeMillis(), appName + "(" + id + ")"));
             InstanceStatus instanceStatus = overriddenInstanceStatusMap.remove(id);
             if (instanceStatus != null) {
@@ -625,8 +635,10 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
     public void evict(long additionalLeaseMs) {
         logger.debug("Running the evict task");
 
-        // 是否开启了租约过期，默认是开启的，isLeaseExpirationEnabled 里面的逻辑
-        // 首先会判断是否开启了自我保护机制，如果没有开启，!isLeaseExpirationEnabled() 为 false，允许直接摘除故障服务
+        // 是否开启了租约过期，默认是开启的
+        //
+        // isLeaseExpirationEnabled 里面的逻辑
+        // 首先会判断是否开启了自我保护机制，如果没有开启，!isLeaseExpirationEnabled() 为 false，允许直接剔除故障服务
         // 如果开启了自我保护机制，每分钟接收心跳次数的阈值 > 0 并且「最近一分钟的心跳次数 > 每分钟接收心跳次数的阈值」时，就会允许摘除故障服务，
         // 如果「最近一分钟的心跳次数 <= 每分钟接收心跳次数的阈值」时，就不允许摘除故障服务，即所谓的服务自我保护机制
         if (!isLeaseExpirationEnabled()) {
@@ -661,6 +673,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
         // 每次最多从注册表摘取的数量限制
         int evictionLimit = registrySize - registrySizeThreshold;
 
+        // 需要剔除的数量 toEvict
         int toEvict = Math.min(expiredLeases.size(), evictionLimit);
         if (toEvict > 0) {
             logger.info("Evicting {} items (expired={}, evictionLimit={})", toEvict, expiredLeases.size(), evictionLimit);
@@ -934,11 +947,8 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             while (iter.hasNext()) {
                 Lease<InstanceInfo> lease = iter.next().getLeaseInfo();
                 InstanceInfo instanceInfo = lease.getHolder();
-                logger.debug(
-                        "The instance id {} is found with status {} and actiontype {}",
-                        instanceInfo.getId(), instanceInfo.getStatus().name(), instanceInfo.getActionType().name());
-                Application app = applicationInstancesMap.get(instanceInfo
-                        .getAppName());
+                logger.debug("The instance id {} is found with status {} and actiontype {}", instanceInfo.getId(), instanceInfo.getStatus().name(), instanceInfo.getActionType().name());
+                Application app = applicationInstancesMap.get(instanceInfo.getAppName());
                 if (app == null) {
                     app = new Application(instanceInfo.getAppName());
                     applicationInstancesMap.put(instanceInfo.getAppName(), app);
@@ -955,8 +965,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 for (RemoteRegionRegistry remoteRegistry : this.regionNameVSRemoteRegistry.values()) {
                     Applications applications = remoteRegistry.getApplicationDeltas();
                     for (Application application : applications.getRegisteredApplications()) {
-                        Application appInLocalRegistry =
-                                allAppsInLocalRegion.getRegisteredApplications(application.getName());
+                        Application appInLocalRegistry = allAppsInLocalRegion.getRegisteredApplications(application.getName());
                         if (appInLocalRegistry == null) {
                             apps.addApplication(application);
                         }
@@ -1013,8 +1022,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             while (iter.hasNext()) {
                 Lease<InstanceInfo> lease = iter.next().getLeaseInfo();
                 InstanceInfo instanceInfo = lease.getHolder();
-                logger.debug("The instance id {} is found with status {} and actiontype {}",
-                        instanceInfo.getId(), instanceInfo.getStatus().name(), instanceInfo.getActionType().name());
+                logger.debug("The instance id {} is found with status {} and actiontype {}", instanceInfo.getId(), instanceInfo.getStatus().name(), instanceInfo.getActionType().name());
                 Application app = applicationInstancesMap.get(instanceInfo.getAppName());
                 if (app == null) {
                     app = new Application(instanceInfo.getAppName());
@@ -1327,7 +1335,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
 
             // elapsedMs 表时的是上次执行执行此方法的时间与本次执行的时间间隔
             long elapsedMs = TimeUnit.NANOSECONDS.toMillis(currNanos - lastNanos);
-            // serverConfig.getEvictionIntervalTimerInMs() 为摘除服务时间间隔
+            // serverConfig.getEvictionIntervalTimerInMs() 为摘除服务时间间隔，默认服务剔除时间 60 秒
             long compensationTime = elapsedMs - serverConfig.getEvictionIntervalTimerInMs();
             return compensationTime <= 0l ? 0l : compensationTime;
         }

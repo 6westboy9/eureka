@@ -69,10 +69,7 @@ class TaskExecutors<ID, T> {
         return new TaskExecutors<>(idx -> new SingleTaskWorkerRunnable<>("TaskNonBatchingWorker-" + name + '-' + idx, isShutdown, metrics, processor, acceptorExecutor), workerCount, isShutdown);
     }
 
-    static <ID, T> TaskExecutors<ID, T> batchExecutors(final String name,
-                                                       int workerCount,
-                                                       final TaskProcessor<T> processor,
-                                                       final AcceptorExecutor<ID, T> acceptorExecutor) {
+    static <ID, T> TaskExecutors<ID, T> batchExecutors(final String name, int workerCount, final TaskProcessor<T> processor, final AcceptorExecutor<ID, T> acceptorExecutor) {
         final AtomicBoolean isShutdown = new AtomicBoolean();
         final TaskExecutorMetrics metrics = new TaskExecutorMetrics(name);
         registeredMonitors.put(name, metrics);
@@ -187,6 +184,8 @@ class TaskExecutors<ID, T> {
                     metrics.registerExpiryTimes(holders);
 
                     List<T> tasks = getTasksOf(holders);
+
+                    // 由 ReplicationTaskProcessor 后台线程批处理
                     ProcessingResult result = processor.process(tasks);
                     switch (result) {
                         case Success:

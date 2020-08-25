@@ -920,9 +920,16 @@ public class DiscoveryClient implements EurekaClient {
             if (httpResponse.getStatusCode() == Status.NOT_FOUND.getStatusCode()) {
                 REREGISTER_COUNTER.increment();
                 logger.info(PREFIX + "{} - Re-registering apps/{}", appPathIdentifier, instanceInfo.getAppName());
+
+                // 续约失败时，设置
+                // isInstanceInfoDirty = true;
+                // lastDirtyTimestamp = System.currentTimeMillis();
                 long timestamp = instanceInfo.setIsDirtyWithTime();
+                // 续约失败，重新注册
                 boolean success = register();
+
                 if (success) {
+                    // 注册成功后，清除 dirty 标志
                     instanceInfo.unsetIsDirty(timestamp);
                 }
                 return success;
@@ -1346,11 +1353,11 @@ public class DiscoveryClient implements EurekaClient {
             heartbeatTask = new TimedSupervisorTask("heartbeat", scheduler, heartbeatExecutor, renewalIntervalInSecs, TimeUnit.SECONDS, expBackOffBound, new HeartbeatThread());
             scheduler.schedule(heartbeatTask, renewalIntervalInSecs, TimeUnit.SECONDS);
 
-            // 创建应用实例信息复制器（实际上就是用于 Eureka Client 向 Eureka Server 请求注册）
+            // 创建服务实例信息复制器（实际上就是用于 Eureka Client 向 Eureka Server 请求注册）
             // InstanceInfo replicator
             instanceInfoReplicator = new InstanceInfoReplicator(this, instanceInfo, clientConfig.getInstanceInfoReplicationIntervalSeconds(), 2); // burstSize
 
-            // 创建应用实例状态变更监听器
+            // 创建服务实例状态变更监听器
             statusChangeListener = new ApplicationInfoManager.StatusChangeListener() {
                 @Override
                 public String getId() {
@@ -1366,16 +1373,18 @@ public class DiscoveryClient implements EurekaClient {
                         logger.info("Saw local status change event {}", statusChangeEvent);
                     }
 
+                    // 只要服务实例状态变更，就会执行
                     instanceInfoReplicator.onDemandUpdate();
                 }
             };
 
-            // 注册应用实例状态变更监听器
+            // 注册服务实例状态变更监听器
             if (clientConfig.shouldOnDemandUpdateStatusChange()) {
                 applicationInfoManager.registerStatusChangeListener(statusChangeListener);
             }
 
-            // 开启应用实例信息复制器（实际的 Eureka Client 注册入口）
+            // 开启服务实例信息复制器（实际的 Eureka Client 注册入口）
+            // clientConfig.getInitialInstanceInfoReplicationIntervalSeconds() 为注册服务实例延迟时间，默认 40 秒
             instanceInfoReplicator.start(clientConfig.getInitialInstanceInfoReplicationIntervalSeconds());
         } else {
             logger.info("Not registering with Eureka server per configuration");
@@ -1452,7 +1461,7 @@ public class DiscoveryClient implements EurekaClient {
     void refreshInstanceInfo() {
         // 刷新数据中心信息
         applicationInfoManager.refreshDataCenterInfoIfRequired();
-        // 刷新租约信息
+        // 刷新服务实例的租约信息，applicationInfoManager 中主要是服务实例管理
         applicationInfoManager.refreshLeaseInfoIfRequired();
         // 健康检查
         InstanceStatus status;
@@ -1475,6 +1484,7 @@ public class DiscoveryClient implements EurekaClient {
 
         public void run() {
             if (renew()) {
+                // 最后成功向 Eureka Server 发送心跳信息的时间戳
                 lastSuccessfulHeartbeatTimestamp = System.currentTimeMillis();
             }
         }

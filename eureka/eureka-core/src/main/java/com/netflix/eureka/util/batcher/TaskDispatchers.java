@@ -40,10 +40,13 @@ public class TaskDispatchers {
                                                                              long congestionRetryDelayMs,
                                                                              long networkFailureRetryMs,
                                                                              TaskProcessor<T> taskProcessor) {
-        final AcceptorExecutor<ID, T> acceptorExecutor = new AcceptorExecutor<>(
-                id, maxBufferSize, workloadSize, maxBatchingDelay, congestionRetryDelayMs, networkFailureRetryMs
-        );
+
+        // 一级队列和负责接收任务的线程
+        final AcceptorExecutor<ID, T> acceptorExecutor = new AcceptorExecutor<>(id, maxBufferSize, workloadSize, maxBatchingDelay, congestionRetryDelayMs, networkFailureRetryMs);
+        // 二级队列和负责将任务拆分批次的线程
         final TaskExecutors<ID, T> taskExecutor = TaskExecutors.batchExecutors(id, workerCount, taskProcessor, acceptorExecutor);
+
+
         return new TaskDispatcher<ID, T>() {
             @Override
             public void process(ID id, T task, long expiryTime) {

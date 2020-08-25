@@ -48,9 +48,13 @@ public class LeaseInfo {
     private int durationInSecs = DEFAULT_LEASE_DURATION;
 
     // Server populated
+    // 服务注册时间
     private long registrationTimestamp;
+    // 最近一次续约时间
     private long lastRenewalTimestamp;
+    // 服务剔除/下线时间
     private long evictionTimestamp;
+    // 服务状态为 UP 即服务上线时间
     private long serviceUpTimestamp;
 
     public static final class Builder {

@@ -209,7 +209,7 @@ public class EurekaBootStrap implements ServletContextListener {
             );
         }
 
-        // 创建 Eureka Server 集群节点集合
+        // 创建 Eureka Server 集群节点集合，处理 Eureka Server 集群初始化
         PeerEurekaNodes peerEurekaNodes = getPeerEurekaNodes(
                 registry,
                 eurekaServerConfig,
@@ -235,6 +235,8 @@ public class EurekaBootStrap implements ServletContextListener {
         logger.info("Initialized server context");
 
         // 从其他 Eureka Server 拉取注册表信息进行同步
+        // 自己作为客户端从其他相邻 Eureka Server 节点拉取所有应用实例信息，添加到自己的注册表中来
+        // registryCount 从 Eureka Server 其他节点添加到自己注册表中的服务实例数量
         // Copy registry from neighboring eureka node
         int registryCount = registry.syncUp();
         // 打开服务故障处理机制
@@ -246,15 +248,7 @@ public class EurekaBootStrap implements ServletContextListener {
     }
     
     protected PeerEurekaNodes getPeerEurekaNodes(PeerAwareInstanceRegistry registry, EurekaServerConfig eurekaServerConfig, EurekaClientConfig eurekaClientConfig, ServerCodecs serverCodecs, ApplicationInfoManager applicationInfoManager) {
-        PeerEurekaNodes peerEurekaNodes = new PeerEurekaNodes(
-                registry,
-                eurekaServerConfig,
-                eurekaClientConfig,
-                serverCodecs,
-                applicationInfoManager
-        );
-        
-        return peerEurekaNodes;
+        return new PeerEurekaNodes(registry, eurekaServerConfig, eurekaClientConfig, serverCodecs, applicationInfoManager);
     }
 
     /**

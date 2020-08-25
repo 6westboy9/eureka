@@ -31,7 +31,7 @@ class InstanceInfoReplicator implements Runnable {
     private final DiscoveryClient discoveryClient;
     // 应用实例信息
     private final InstanceInfo instanceInfo;
-    // 定时执行频率
+    // 向 Eureka Server 同步服务实例信息的时间间隔，单位为秒，默认 30 秒
     private final int replicationIntervalSeconds;
     // 定时执行器
     private final ScheduledExecutorService scheduler;
@@ -52,11 +52,7 @@ class InstanceInfoReplicator implements Runnable {
     InstanceInfoReplicator(DiscoveryClient discoveryClient, InstanceInfo instanceInfo, int replicationIntervalSeconds, int burstSize) {
         this.discoveryClient = discoveryClient;
         this.instanceInfo = instanceInfo;
-        this.scheduler = Executors.newScheduledThreadPool(1,
-                new ThreadFactoryBuilder()
-                        .setNameFormat("DiscoveryClient-InstanceInfoReplicator-%d")
-                        .setDaemon(true)
-                        .build());
+        this.scheduler = Executors.newScheduledThreadPool(1, new ThreadFactoryBuilder().setNameFormat("DiscoveryClient-InstanceInfoReplicator-%d").setDaemon(true).build());
 
         this.scheduledPeriodicRef = new AtomicReference<Future>();
 
@@ -65,6 +61,7 @@ class InstanceInfoReplicator implements Runnable {
         this.replicationIntervalSeconds = replicationIntervalSeconds;
         this.burstSize = burstSize;
 
+        // burstSize 默认为 2
         this.allowedRatePerMinute = 60 * this.burstSize / this.replicationIntervalSeconds;
         logger.info("InstanceInfoReplicator onDemand update allowed rate per min is {}", allowedRatePerMinute);
     }
@@ -72,7 +69,10 @@ class InstanceInfoReplicator implements Runnable {
     public void start(int initialDelayMs) {
         if (started.compareAndSet(false, true)) {
             // 实际作用为开启 run() 方法中的注册逻辑
+            // isInstanceInfoDirty = true;
+            // lastDirtyTimestamp = System.currentTimeMillis();
             instanceInfo.setIsDirty();  // for initial register
+            // 延迟定时任务
             Future next = scheduler.schedule(this, initialDelayMs, TimeUnit.SECONDS);
             // 为什么此处设置 scheduledPeriodicRef ？在 InstanceInfoReplicator#onDemandUpdate() 方法会看到具体用途
             scheduledPeriodicRef.set(next);
@@ -95,8 +95,10 @@ class InstanceInfoReplicator implements Runnable {
         }
     }
 
+    // 实际调用处只有 DiscoveryClient#initScheduledTasks 方法
     public boolean onDemandUpdate() {
-        if (rateLimiter.acquire(burstSize, allowedRatePerMinute)) {  // 限流相关，跳过
+        // 获取令牌，获取成功，向 Eureka Server 发起注册
+        if (rateLimiter.acquire(burstSize, allowedRatePerMinute)) {  // 限流相关
             if (!scheduler.isShutdown()) {
                 scheduler.submit(new Runnable() {
                     @Override
@@ -106,11 +108,11 @@ class InstanceInfoReplicator implements Runnable {
                         Future latestPeriodic = scheduledPeriodicRef.get();
                         if (latestPeriodic != null && !latestPeriodic.isDone()) {
                             logger.debug("Canceling the latest scheduled update, it will be rescheduled at the end of on demand update");
-                            // 取消任务
+                            // 将先前的任务取消
                             latestPeriodic.cancel(false);
                         }
 
-                        // 再次调用
+                        // 又再此处进行手动调用 run 方法，用意是？？？
                         InstanceInfoReplicator.this.run();
                     }
                 });
@@ -127,9 +129,14 @@ class InstanceInfoReplicator implements Runnable {
 
     public void run() {
         try {
-            // 刷新应用实例信息
+            // 更新服务实例信息
             discoveryClient.refreshInstanceInfo();
 
+            // 在 start 方法中设置了 dirtyTimestamp 时间戳，延迟 40 秒之后，执行到此处开始进行注册
+            // start 方法中 instanceInfo.setIsDirty() 的具体操作
+            // isInstanceInfoDirty = true;
+            // lastDirtyTimestamp = System.currentTimeMillis();
+            // isDirtyWithTime 作用就是判断实例信息是否有变更，如果有变更返回实例信息变更时的时间戳
             Long dirtyTimestamp = instanceInfo.isDirtyWithTime();
             if (dirtyTimestamp != null) {
                 // 发起注册
@@ -139,7 +146,9 @@ class InstanceInfoReplicator implements Runnable {
         } catch (Throwable t) {
             logger.warn("There was a problem with the instance info replicator", t);
         } finally {
-            // 提交任务
+            // 延迟任务
+            // replicationIntervalSeconds 为向 Eureka Server 同步服务实例信息的时间间隔，单位为秒，默认 30 秒
+            // 此处的含义是，再过 30 秒执行一次 run 方法，其作用是？
             Future next = scheduler.schedule(this, replicationIntervalSeconds, TimeUnit.SECONDS);
             scheduledPeriodicRef.set(next);
         }
